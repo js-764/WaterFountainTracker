@@ -2,6 +2,10 @@ require("dotenv").config();
 const express = require("express")
 const app = express()
 
+app.use(express.json());
+
+const {Client} = require('pg')
+
 //All the cors stuff to connect to the frontend
 const cors = require("cors")
 const corsOptions = {
@@ -10,13 +14,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-app.use(express.json());
-
-const {Client} = require('pg')
-
 const con = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
+        //needed for railway
         rejectUnauthorized: false,
     },
 })
@@ -84,6 +85,11 @@ con.connect()
 //     res.json(waterFountainData)
 // })
 
+// THE LINE BELOW IS OLD AND SHOULD BE IGNORED
+// res.json(waterFountainData)
+
+
+//get fountains
 app.get("/api", async (req, res) => {
     
     try {
@@ -95,10 +101,37 @@ app.get("/api", async (req, res) => {
     }
 })
     
+// Update a fountain based on its ID
+app.put("/update/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    // THE LINE BELOW IS OLD AND SHOULD BE IGNORED
-    // res.json(waterFountainData)
+        const parsedId = parseInt(id);
+        if (isNaN(parsedId)) {
+            return res.status(400).send("Invalid ID");
+        }
 
+        const { fountain_status, fountain_desc, fountain_date, image_url } = req.body;
+
+        const update_query = `
+            UPDATE fountains 
+            SET fountain_status = $2, 
+                fountain_desc = $3, 
+                fountain_date = $4, 
+                image_url = $5 
+            WHERE fountain_id = $1
+        `;
+
+        await con.query(update_query, [parsedId, fountain_status, fountain_desc, fountain_date, image_url]);
+
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("Database error:", err);
+        res.sendStatus(500);
+    }
+})
+
+// //OLD APP.PUT() METHOD
 // app.put("/update/:id", (req, res) => {
 //     const {
 //         body,
