@@ -1,0 +1,101 @@
+.navbar-header {
+    background-color: rgb(189, 213, 150);
+    color:white;
+    padding-top:20px;
+    padding-bottom:15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    z-index: 2000;
+}
+
+.separations {
+    background-color: rgb(147, 165, 117);
+    color:white;
+    padding:2px;
+    box-shadow: 0px 2px 8px #424c3598;
+    
+}
+
+
+.longTitle {
+    display:inline;
+    padding:none;
+    margin:none;
+    font-weight: bold;
+    color:white;
+}
+
+/* I can't get this to work. It's still purple :( */
+a:visited {
+    display:inline;
+    padding:none;
+    margin:none;
+    font-weight: bold;
+    text-decoration: none; 
+    color:white !important;
+}
+
+/* Hidden by default unless the screen is a smaller width */
+.shortTitle {
+    display:none;
+    padding:none;
+    margin:none;
+    font-weight: bold;
+    color:white;
+}
+
+/* I can't get this to work. It's still purple :( */
+a:visited {
+    display:inline;
+    padding:none;
+    margin:none;
+    font-weight: bold;
+    text-decoration: none; 
+    color:white !important;
+}
+
+
+
+.btns {
+    border:none;
+    background-color:  rgb(189, 213, 150);
+    color:rgb(88, 96, 75);
+    cursor:pointer;
+    display:inline;
+    float: right;
+    margin:5px;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Hidden by default unless the screen is a smaller width */
+.menuIcon {
+    border:none;
+    background-color:  rgb(189, 213, 150);
+    color:rgb(88, 96, 75);
+    cursor:pointer;
+    display:inline;
+    float: right;
+    margin:5px;
+    display:none;
+    font-size: 1.1rem;
+    text-decoration: none; 
+}
+
+@media screen and (max-width: 600px) {
+  .btns {
+    display:none;
+  }
+  .menuIcon {
+    display:block;
+  }
+  .longTitle {
+    display:none;
+    }
+    .shortTitle {
+    display:inline;
+    }
+}
