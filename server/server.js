@@ -12,95 +12,92 @@ app.use(cors(corsOptions))
 
 app.use(express.json());
 
-// const {Client} = require('pg')
+const {Client} = require('pg')
 
-// const con = new Client({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     port: process.env.DB_PORT,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME
-// })
-
-// con.connect().then(()=> console.log("connected"))
-
-//This doesn't work anymore
-const waterFountainData = {
-    fountains:[{
-        "id":"0",
-        "name":"Water Fountain By The Oval",
-        "locationY":"39.963",
-        "locationX":"-75.176",
-        "status":"Good",
-        "desc":"It works",
-        "date":"7-1-2025",
-        "image_url": "[Good Image]"
+const con = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
     },
-    {
-        "id":"1",
-        "name":"Philadelphia Water: Water Station #4",
-        "locationY":"39.986",
-        "locationX":"-75.201",
-        "status":"Dirty",
-        "desc":"Someone left trash in the fountain",
-        "date":"8-11-2025",
-        "image_url": "[Photo of trashy fountain]"
-    },
-    {
-        "id":"2",
-        "name":"Locust Street Fountain",
-        "locationY":"39.951",
-        "locationX":"-75.181",
-        "status":"Broken/Not Working",
-        "desc":"Water won't come out",
-        "date":"6-19-2025",
-        "image_url": "[Image of defective fountain]"
-    },
-    {
-        "id":"3",
-        "name":"Lloyd Hall Fountain",
-        "locationY":"39.970",
-        "locationX":"-75.185",
-        "status":"Obstructed",
-        "desc":"There's a bag covering it",
-        "date":"7-2-2025",
-        "image_url": "[Photo with bag over fountain]"
-    },
-    {
-        "id":"4",
-        "name":"Lion's Head Fountain",
-        "locationY":"39.952",
-        "locationX":"-75.191",
-        "status":"Snow/Ice Blocking Access",
-        "desc":"The water fountain is frozen over",
-        "date":"12-4-2024",
-        "image_url": "[Image of the icy fountain]"
-    }]
-}
-
-// This sends the water fountain data to the front end
-app.get("/api", (req, res) => {
-    res.json(waterFountainData)
 })
 
+con.connect()
+    .then(()=> console.log("connected railway to postgresql"))
+    .catch((err) => console.error("Database connection error:",err))
+
+//This doesn't work anymore
+// const waterFountainData = {
+//     fountains:[{
+//         "id":"0",
+//         "name":"Water Fountain By The Oval",
+//         "locationY":"39.963",
+//         "locationX":"-75.176",
+//         "status":"Good",
+//         "desc":"It works",
+//         "date":"7-1-2025",
+//         "image_url": "[Good Image]"
+//     },
+//     {
+//         "id":"1",
+//         "name":"Philadelphia Water: Water Station #4",
+//         "locationY":"39.986",
+//         "locationX":"-75.201",
+//         "status":"Dirty",
+//         "desc":"Someone left trash in the fountain",
+//         "date":"8-11-2025",
+//         "image_url": "[Photo of trashy fountain]"
+//     },
+//     {
+//         "id":"2",
+//         "name":"Locust Street Fountain",
+//         "locationY":"39.951",
+//         "locationX":"-75.181",
+//         "status":"Broken/Not Working",
+//         "desc":"Water won't come out",
+//         "date":"6-19-2025",
+//         "image_url": "[Image of defective fountain]"
+//     },
+//     {
+//         "id":"3",
+//         "name":"Lloyd Hall Fountain",
+//         "locationY":"39.970",
+//         "locationX":"-75.185",
+//         "status":"Obstructed",
+//         "desc":"There's a bag covering it",
+//         "date":"7-2-2025",
+//         "image_url": "[Photo with bag over fountain]"
+//     },
+//     {
+//         "id":"4",
+//         "name":"Lion's Head Fountain",
+//         "locationY":"39.952",
+//         "locationX":"-75.191",
+//         "status":"Snow/Ice Blocking Access",
+//         "desc":"The water fountain is frozen over",
+//         "date":"12-4-2024",
+//         "image_url": "[Image of the icy fountain]"
+//     }]
+// }
+
+// This sends the water fountain data to the front end
 // app.get("/api", (req, res) => {
-    
-
-//     const fetch_query="SELECT * FROM fountains"
-//     con.query(fetch_query,(err,result) => {
-//         if (err)
-//         {
-//             res.send("DB get-query failed",err)
-//             res.sendStatus(500)
-//         } else {
-//             res.send(result.rows)
-//         }
-//     })
-    
-
-//     // THE LINE BELOW IS OLD AND SHOULD BE IGNORED
-//     // res.json(waterFountainData)
+//     res.json(waterFountainData)
 // })
+
+app.get("/api", async (req, res) => {
+    
+    try {
+        const { rows } = await client.query("SELECT * FROM fountains");
+        res.json({ fountains: rows });
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+})
+    
+
+    // THE LINE BELOW IS OLD AND SHOULD BE IGNORED
+    // res.json(waterFountainData)
 
 // app.put("/update/:id", (req, res) => {
 //     const {
