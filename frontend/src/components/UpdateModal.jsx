@@ -22,7 +22,7 @@ function UpdateModal({ fountain, statuses, closeModal, fetchAPI }) {
     function handleSubmit(event) {
         event.preventDefault()
 
-        axios.put(`${baseUrl}/update/${fountain.fountain_id}`, {
+        axios.put(`${baseUrl}/update/:${fountain.fountain_id}`, {
             id: fountain.fountain_id,
             fountain_status:status,
             fountain_desc:desc || "[No Description Provided]",
