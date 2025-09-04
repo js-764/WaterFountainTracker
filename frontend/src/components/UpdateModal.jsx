@@ -22,6 +22,8 @@ function UpdateModal({ fountain, statuses, closeModal, fetchAPI }) {
     function handleSubmit(event) {
         event.preventDefault()
 
+        const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
         axios.put(`${baseUrl}/update/:${fountain.fountain_id}`, {
             id: fountain.fountain_id,
             fountain_status:status,
