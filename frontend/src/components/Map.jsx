@@ -16,8 +16,9 @@ function Map() {
 
     // function to call for the data and make the array hold the data
     const fetchAPI = async () => {
+        const baseUrl = process.env.REACT_APP_API_BASE_URL;
         try {
-            const response = await axios.get("http://localhost:8080/api")
+            const response = await axios.get(`${baseUrl}/api`)
             
             if (Array.isArray(response.data)) {
                 setArray(response.data)
@@ -233,7 +234,7 @@ export default Map
 
 
 
-// const API_KEY = "34a18b6d611ee599c6cf34f54e526996";
+// const API_KEY = "";
 // const BASE_URL = "https://api.themoviedb.org/3";
 
 // export const getPopularMovies = async () => {
