@@ -135,5 +135,9 @@ app.put("/update/:id", (req, res) => {
     })
 })
 
+app.get("/", (req, res) => {
+  res.send("Backend server is running. Frontend coming soon!");
+});
+
 
 app.listen(8080, () => console.log(`Server is running on port 8080`))
