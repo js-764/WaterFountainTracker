@@ -6,11 +6,14 @@ app.use(express.json());
 
 const {Client} = require('pg')
 
+const path = require("path");
+
 //All the cors stuff to connect to the frontend
 const cors = require("cors")
 const corsOptions = {
     origin: [
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://jade-capybara-cb936a.netlify.app"
     ]
 }
 
@@ -171,5 +174,10 @@ app.get("/", (req, res) => {
   res.send("Backend server is running. Frontend coming soon!");
 });
 
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 app.listen(8080, () => console.log(`Server is running on port 8080`))
