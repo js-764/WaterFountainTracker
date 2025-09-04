@@ -20,8 +20,8 @@ function Map() {
         try {
             const response = await axios.get(`${baseUrl}/api`)
             
-            if (Array.isArray(response.data)) {
-                setArray(response.data)
+            if (Array.isArray(response.data.fountains)) {
+                setArray(response.data.fountains)
             } else {
                 console.error("Error with fountain data format:",data.response)
             }
